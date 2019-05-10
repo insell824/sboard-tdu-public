@@ -1,0 +1,270 @@
+<script src="/socket.io/socket.io.js"></script>
+<div id="app">
+  <div class="row mt-3">
+    <div class="col-12">
+      <div class="card h2 bg-white p-3 mb-1">
+        <%=process.env.SITE_NAME%>
+      </div>
+    </div>
+    <!-- .col-12 -->
+  </div>
+  <div class="row">
+    <div class="col-12">
+      <div class="card">
+        <div class="card-header">
+          知的情報空間研究室
+        </div>
+        <div class="card-body">
+          <table class="table table-bordered">
+            <thead>
+              <tr>
+                <th scope="col">#</th>
+                <th scope="col">河西</th>
+                <th scope="col">酒井</th>
+                <th scope="col">富田</th>
+                <th scope="col">仲島</th>
+                <th scope="col">西垣</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <th scope="row">在室</th>
+                <th>
+                  <button type="button" class="btn btn-primary" v-on:click="socketAction(0,64,64, 0,0)">
+                    <i class="fas fa-check"></i>
+                  </button>
+                </th>
+                <th>
+                  <button type="button" class="btn btn-primary" v-on:click="socketAction(0,64,64, 0,1)">
+                    <i class="fas fa-check"></i>
+                  </button>
+                </th>
+                <th>
+                  <button type="button" class="btn btn-primary" v-on:click="socketAction(0,64,64, 0,2)">
+                    <i class="fas fa-check"></i>
+                  </button>
+                </th>
+                <th>
+                  <button type="button" class="btn btn-primary" v-on:click="socketAction(0,64,64, 0,3)">
+                    <i class="fas fa-check"></i>
+                  </button>
+                </th>
+                <th>
+                  <button type="button" class="btn btn-primary" v-on:click="socketAction(0,64,64, 0,4)">
+                    <i class="fas fa-check"></i>
+                  </button>
+                </th>
+              </tr>
+              <tr>
+                <th scope="row">すぐ戻る</th>
+                <th>
+                    <button type="button" class="btn btn-primary" v-on:click="socketAction(64,64,0, 1,0)">
+                      <i class="fas fa-check"></i>
+                    </button>
+                  </th>
+                  <th>
+                    <button type="button" class="btn btn-primary" v-on:click="socketAction(64,64,0, 1,1)">
+                      <i class="fas fa-check"></i>
+                    </button>
+                  </th>
+                  <th>
+                    <button type="button" class="btn btn-primary" v-on:click="socketAction(64,64,0, 1,2)">
+                      <i class="fas fa-check"></i>
+                    </button>
+                  </th>
+                  <th>
+                    <button type="button" class="btn btn-primary" v-on:click="socketAction(64,64,0, 1,3)">
+                      <i class="fas fa-check"></i>
+                    </button>
+                  </th>
+                  <th>
+                    <button type="button" class="btn btn-primary" v-on:click="socketAction(64,64,0, 1,4)">
+                      <i class="fas fa-check"></i>
+                    </button>
+                  </th>
+              </tr>
+              <tr>
+                <th scope="row">学内</th>
+                <th>
+                    <button type="button" class="btn btn-primary" v-on:click="socketAction(64,64,0, 2,0)">
+                      <i class="fas fa-check"></i>
+                    </button>
+                  </th>
+                  <th>
+                    <button type="button" class="btn btn-primary" v-on:click="socketAction(64,64,0, 2,1)">
+                      <i class="fas fa-check"></i>
+                    </button>
+                  </th>
+                  <th>
+                    <button type="button" class="btn btn-primary" v-on:click="socketAction(64,64,0, 2,2)">
+                      <i class="fas fa-check"></i>
+                    </button>
+                  </th>
+                  <th>
+                    <button type="button" class="btn btn-primary" v-on:click="socketAction(64,64,0, 2,3)">
+                      <i class="fas fa-check"></i>
+                    </button>
+                  </th>
+                  <th>
+                    <button type="button" class="btn btn-primary" v-on:click="socketAction(64,64,0, 2,4)">
+                      <i class="fas fa-check"></i>
+                    </button>
+                  </th>
+              </tr>
+              <tr>
+                <th scope="row">酒井研</th>
+                <th>
+                    <button type="button" class="btn btn-primary" v-on:click="socketAction(64,64,0, 3,0)">
+                      <i class="fas fa-check"></i>
+                    </button>
+                  </th>
+                  <th>
+                    <button type="button" class="btn btn-primary" v-on:click="socketAction(64,64,0, 3,1)">
+                      <i class="fas fa-check"></i>
+                    </button>
+                  </th>
+                  <th>
+                    <button type="button" class="btn btn-primary" v-on:click="socketAction(64,64,0, 3,2)">
+                      <i class="fas fa-check"></i>
+                    </button>
+                  </th>
+                  <th>
+                    <button type="button" class="btn btn-primary" v-on:click="socketAction(64,64,0, 3,3)">
+                      <i class="fas fa-check"></i>
+                    </button>
+                  </th>
+                  <th>
+                    <button type="button" class="btn btn-primary" v-on:click="socketAction(64,64,0, 3,4)">
+                      <i class="fas fa-check"></i>
+                    </button>
+                  </th>
+              </tr>
+              <tr>
+                <th scope="row">他研究室</th>
+                <th>
+                    <button type="button" class="btn btn-primary" v-on:click="socketAction(64,64,0, 4,0)">
+                      <i class="fas fa-check"></i>
+                    </button>
+                  </th>
+                  <th>
+                    <button type="button" class="btn btn-primary" v-on:click="socketAction(64,64,0, 4,1)">
+                      <i class="fas fa-check"></i>
+                    </button>
+                  </th>
+                  <th>
+                    <button type="button" class="btn btn-primary" v-on:click="socketAction(64,64,0, 4,2)">
+                      <i class="fas fa-check"></i>
+                    </button>
+                  </th>
+                  <th>
+                    <button type="button" class="btn btn-primary" v-on:click="socketAction(64,64,0, 4,3)">
+                      <i class="fas fa-check"></i>
+                    </button>
+                  </th>
+                  <th>
+                    <button type="button" class="btn btn-primary" v-on:click="socketAction(64,64,0, 4,4)">
+                      <i class="fas fa-check"></i>
+                    </button>
+                  </th>
+              </tr>
+              <tr>
+                <th scope="row">学外</th>
+                <th>
+                    <button type="button" class="btn btn-primary" v-on:click="socketAction(0,64,0, 5,0)">
+                      <i class="fas fa-check"></i>
+                    </button>
+                  </th>
+                  <th>
+                    <button type="button" class="btn btn-primary" v-on:click="socketAction(0,64,0, 5,1)">
+                      <i class="fas fa-check"></i>
+                    </button>
+                  </th>
+                  <th>
+                    <button type="button" class="btn btn-primary" v-on:click="socketAction(0,64,0, 5,2)">
+                      <i class="fas fa-check"></i>
+                    </button>
+                  </th>
+                  <th>
+                    <button type="button" class="btn btn-primary" v-on:click="socketAction(0,64,0, 5,3)">
+                      <i class="fas fa-check"></i>
+                    </button>
+                  </th>
+                  <th>
+                    <button type="button" class="btn btn-primary" v-on:click="socketAction(0,64,0, 5,4)">
+                      <i class="fas fa-check"></i>
+                    </button>
+                  </th>
+              </tr>
+              <tr>
+                <th scope="row">帰宅</th>
+                <th>
+                    <button type="button" class="btn btn-primary" v-on:click="socketAction(64,0,0, 6,0)">
+                      <i class="fas fa-check"></i>
+                    </button>
+                  </th>
+                  <th>
+                    <button type="button" class="btn btn-primary" v-on:click="socketAction(64,0,0, 6,1)">
+                      <i class="fas fa-check"></i>
+                    </button>
+                  </th>
+                  <th>
+                    <button type="button" class="btn btn-primary" v-on:click="socketAction(64,0,0, 6,2)">
+                      <i class="fas fa-check"></i>
+                    </button>
+                  </th>
+                  <th>
+                    <button type="button" class="btn btn-primary" v-on:click="socketAction(64,0,0, 6,3)">
+                      <i class="fas fa-check"></i>
+                    </button>
+                  </th>
+                  <th>
+                    <button type="button" class="btn btn-primary" v-on:click="socketAction(64,0,0, 6,4)">
+                      <i class="fas fa-check"></i>
+                    </button>
+                  </th>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+  var socket = io.connect();
+  var app = new Vue({
+    el: '#app',
+    data: {
+      tableMlab: [
+
+      ]
+    },
+    mounted: function () {
+      console.log("OK");
+      socket.on('greeting', function (data, fn) {
+        console.log(data);
+      });
+    },
+    methods: {
+      socketAction: function (r,g,b,row, col) {
+        console.log("socketAction");
+        socket.emit("changereq", {
+          query: "LEDCTL",
+          r,
+          g,
+          b,
+          row,col
+        })
+      },
+      socketActionOFF : function (col){
+        console.log("OFF");
+        socket.emit("changereq", {
+          query: "LEDCLRCOL",col
+        })
+      }
+    }
+  });
+
+
+</script>

@@ -1,0 +1,118 @@
+<!doctype html>
+<html>
+
+<head>
+  <!-- Required meta tags -->
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+  <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.2/css/all.css"
+    integrity="sha384-fnmOCqbTlWIlj8LyTjo7mOUStjsKC4pOpQbqyi7RrhN7udi9RwhKkMHpvLbHG9Sr" crossorigin="anonymous">
+  <script src="https://cdn.jsdelivr.net/npm/vue"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.18.0/axios.min.js"></script>
+  <!-- CoreUI CSS -->
+  <link rel="stylesheet" href="https://unpkg.com/@coreui/coreui/dist/css/coreui.min.css">
+  <% if(data.title == ""){ %>
+  <title><%=process.env.SITE_NAME%></title>
+  <% }else{ %>
+  <title><%=data.title%> | <%=process.env.SITE_NAME%></title>
+  <% } %>
+  <!-- Optional JavaScript -->
+  <!-- jQuery first, then Popper.js, Bootstrap, then CoreUI  -->
+  <script src="https://code.jquery.com/jquery-3.3.1.min.js"
+    integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"
+    integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"
+    crossorigin="anonymous"></script>
+
+  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.min.js"
+    integrity="sha384-smHYKdLADwkXOn1EmN1qk/HfnUcbVRZyYmZ4qpPea6sjB/pTJ0euyQp0Mk8ck+5T"
+    crossorigin="anonymous"></script>
+  <script src="https://unpkg.com/@coreui/coreui/dist/js/coreui.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.perfect-scrollbar/1.4.0/perfect-scrollbar.min.js"
+    integrity="sha256-pOydVY7re8c1n+fEgg3uoslR/di9NMsOFXJ0Esf2xjQ=" crossorigin="anonymous"></script>
+
+  <link rel="stylesheet" href="/public/stylesheets/common/rotate.css">
+  <link rel="stylesheet"
+    href="https://cdnjs.cloudflare.com/ajax/libs/jquery.perfect-scrollbar/1.4.0/css/perfect-scrollbar.min.css"
+    integrity="sha256-Eff0vTAskMNGMXDva8NMruf8ex6k9EuZ4QXf09lxwaQ=" crossorigin="anonymous" />
+  <style>
+    .row-eq-height {
+      display: flex;
+      flex-wrap: wrap;
+    }
+  </style>
+</head>
+
+<body class="app header-fixed sidebar-fixed aside-menu-fixed sidebar-lg-show">
+  <header class="app-header navbar">
+    <button class="navbar-toggler sidebar-toggler d-lg-none mr-auto" type="button" data-toggle="sidebar-show">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+
+
+    <a class="navbar-brand" href="/">
+      <img class="navbar-brand-full" src="/public/images/brand/logo.svg" width="89" height="25" alt="CoreUI Logo">
+      <img class="navbar-brand-minimized" src="/public/images/brand/sygnet.svg" width="30" height="30"
+        alt="CoreUI Logo">
+    </a>
+
+    <button class="navbar-toggler sidebar-toggler d-md-down-none" type="button" data-toggle="sidebar-lg-show">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="d-none d-lg-block">
+      Status Board for LT
+    </div>
+    <div class="nav navbar-nav ml-auto">
+    </div>
+  </header>
+  <div class="app-body">
+    <div class="sidebar">
+
+      <nav class="sidebar-nav">
+
+        <ul class="nav">
+
+          <li class="nav-title">Status Board</li>
+
+          <li class="nav-item">
+            <a class="nav-link" href="/">
+              <i class="nav-icon fas fa-tachometer-alt"></i> 操作
+            </a>
+          </li>
+
+
+      </nav>
+
+      <button class="sidebar-minimizer brand-minimizer" type="button"></button>
+
+    </div>
+    <!-- .sidebar -->
+
+    <main class="main">
+      <div class="container-fluid">
+        <div class="animated fadeIn">
+          <%- include("../"+panePath,data)%>
+        </div>
+      </div>
+    </main>
+
+  </div>
+  <!-- .app-body -->
+
+  <footer class="app-footer">
+    <div>Insell<span>&copy; 2019</span></div>
+    <div class="ml-auto">
+      <span>Powered by</span>
+      <a href="https://coreui.io">CoreUI</a>
+    </div>
+  </footer>
+  <script>
+    $(function () {
+      $('[data-toggle="tooltip"]').tooltip();
+      const ps = new PerfectScrollbar('nav');
+    });
+  </script>
+</body>
+
+</html>

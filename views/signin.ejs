@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <title>ログイン</title>
+  <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.2/css/all.css"
+    integrity="sha384-fnmOCqbTlWIlj8LyTjo7mOUStjsKC4pOpQbqyi7RrhN7udi9RwhKkMHpvLbHG9Sr" crossorigin="anonymous">
+  <script src="https://cdn.jsdelivr.net/npm/vue"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.18.0/axios.min.js"></script>
+  <link rel="stylesheet" href="https://unpkg.com/@coreui/coreui/dist/css/coreui.min.css">
+  <script src="https://code.jquery.com/jquery-3.3.1.min.js"
+    integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"
+    integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"
+    crossorigin="anonymous"></script>
+  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.min.js"
+    integrity="sha384-smHYKdLADwkXOn1EmN1qk/HfnUcbVRZyYmZ4qpPea6sjB/pTJ0euyQp0Mk8ck+5T"
+    crossorigin="anonymous"></script>
+  <script src="https://unpkg.com/@coreui/coreui/dist/js/coreui.min.js"></script>
+  <link rel="stylesheet" href="/public/stylesheets/common/ballswave.css">
+  <link rel="stylesheet" href="/public/stylesheets/auth/login_local.css">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/js-cookie/2.2.0/js.cookie.min.js"></script>
+</head>
+<body>
+  <header>
+    <div class="text-center">ログイン</div>
+  </header>
+  <div class="login-page" id="app">
+    <div class="form">
+      <p class="mb-0 text-left font-weight-bold">ID</p>
+      <p class="m-0 text-danger text-left">{{ idError }}</p>
+      <input type="text" placeholder="" ref="id" v-model="id" @keyup.enter="$refs.pass.focus();" autofocus>
+      <p class="mb-0 text-left font-weight-bold">パスワード</p>
+      <p class="m-0 text-danger text-left">{{ passError }}</p>
+      <input type="password" placeholder="" v-model="pass" ref="pass" @keyup.enter="signin()">
+      <div class="row text-left">
+        <div class="col-2">
+          <label class="switch switch-success">
+            <input type="checkbox" class="switch-input" v-model="isAutoSignin">
+            <span class="switch-slider"></span>
+          </label>
+        </div>
+        <div class="col-10">
+          <p>サインイン状態の保存</p>
+        </div>
+      </div>
+      <button v-show="!isLoading" v-on:click="signin()">サインイン</button>
+      <div v-show="isLoading" id="loadingButton" class="pt-3">
+        <div id="ballsWaveG">
+          <div id="ballsWaveG_1" class="ballsWaveG"></div>
+          <div id="ballsWaveG_2" class="ballsWaveG"></div>
+          <div id="ballsWaveG_3" class="ballsWaveG"></div>
+          <div id="ballsWaveG_4" class="ballsWaveG"></div>
+          <div id="ballsWaveG_5" class="ballsWaveG"></div>
+          <div id="ballsWaveG_6" class="ballsWaveG"></div>
+          <div id="ballsWaveG_7" class="ballsWaveG"></div>
+          <div id="ballsWaveG_8" class="ballsWaveG"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <script src="/public/javascripts/auth/login_local.js"></script>
+  <!-- REF: https://uicookies.com/free-bootstrap-login-forms/ -->
+  <!-- REF: https://codepen.io/colorlib/pen/rxddKy -->
+</body>
+</html>
