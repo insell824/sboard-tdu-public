@@ -1,0 +1,300 @@
+<script src="/socket.io/socket.io.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/encoding-japanese/1.0.29/encoding.min.js"></script>
+
+<div id="app">
+  <div class="row mt-3">
+    <div class="col-12">
+      <div class="card h2 bg-white p-3 mb-1">
+        <%=title%>
+      </div>
+    </div>
+    <!-- .col-12 -->
+  </div>
+  <div class="row">
+    <div class="col-12">
+      <div class="card">
+        <div class="card-header">
+          メンバー
+        </div>
+        <div class="card-body p-1 p-md-3">
+
+          <div class="form-group">
+            <label for="memberData">Member</label>
+            <textarea v-model="memberListText" class="form-control" id="memberData" rows="6"></textarea>
+          </div>
+
+
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-12">
+      <div class="card">
+        <div class="card-header">
+          カレンダー
+        </div>
+        <div class="card-body p-1 p-md-3">
+
+          <div class="table-responsive">
+
+            <!-- <div id="calendar"></div> -->
+            <!-- <span v-html="calendar"></span> -->
+
+            <h1>{{ year }}年 {{ month }}月</h1>
+            <table>
+              <tr>
+                <td v-for="week in weeks">{{ week }}</td>
+              </tr>
+              <template v-for="days_ in days">
+                <tr>
+                  <template v-for="date in days_">
+                    <td v-bind:style="date.style" v-bind:class="date.class" v-on:click="clickDate(date.row,date.col)">
+                      <div v-bind:class="[{ tdChecking: date.isCheck }]"
+                        style="height:30px;position: relative;line-height:30px;"><i v-show="date.isCheck"
+                          class="fas fa-check-circle"
+                          style="position:absolute;top:3px;left:3px;color:#1565C0;font-size:14px;"></i> {{ date.day }}
+                      </div>
+                    </td>
+                  </template>
+                </tr>
+              </template>
+            </table>
+
+          </div><!-- .table-responsive -->
+
+          <div class="text-center mt-3">
+            <button class="btn btn-primary" v-on:click="moveCalendar('prev')" type="button">
+              <i class="fas fa-arrow-circle-left"></i>
+              前の月</button>
+            <button class="btn btn-primary" v-on:click="moveCalendar('next')" type="button">次の月
+              <i class="fas fa-arrow-circle-right"></i>
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-12">
+      <div class="card">
+        <div class="card-header">
+          ダウンロード
+        </div>
+        <div class="card-body p-1 p-md-3">
+          <button class="btn btn-primary btn-block" v-on:click="csvDownload()" type="button">
+              <i class="fas fa-download"></i> ダウンロード
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+
+  var app = new Vue({
+    el: '#app',
+    data: {
+      weeks: ['日', '月', '火', '水', '木', '金', '土'],
+      calendar: "",
+      year: new Date().getFullYear(),
+      month: new Date().getMonth() + 1,
+      days: [],
+
+      memberListText: "16JK168\n16JK112\n16JK183\n16JK186\n16JK193",
+      fileName:''
+    },
+    mounted: function () {
+      //this.showCalendar(this.year, this.month, this.maketd);
+      this.createCalendar(this.year, this.month);
+    },
+    methods: {
+      clickDate: function (r, c) {
+        this.$nextTick(() => {
+          if (this.days[r][c].isSelective) {
+            this.$set(this.days[r][c], "isCheck", !this.days[r][c].isCheck);
+          }
+        });
+      },
+      createCalendar: function (year, month) {
+        const startDate = new Date(year, month - 1, 1) // 月の最初の日を取得
+        const endDate = new Date(year, month, 0) // 月の最後の日を取得
+        const endDayCount = endDate.getDate() // 月の末日
+        const lastMonthEndDate = new Date(year, month - 2, 0) // 前月の最後の日の情報
+        const lastMonthendDayCount = lastMonthEndDate.getDate() // 前月の末日
+        const startDay = startDate.getDay() // 月の最初の日の曜日を取得
+        let dayCount = 1 // 日にちのカウント
+        for (let w = 0; w < 6; w++) { // 行
+          this.$set(this.days, w, []);
+          for (let d = 0; d < 7; d++) { // 列
+            this.$set(this.days[w], d, {
+              row: w,
+              col: d,
+              day: 0,
+              class: [],
+              style: {},
+              isCheck: false,
+              isSelective: false
+            });
+            var temp = this.days[w][d];
+            if (w == 0 && d < startDay) {
+              // 1行目で1日の曜日の前
+              temp.day = lastMonthendDayCount - startDay + d + 1;
+              temp.class.push("is-disabled");
+            } else if (dayCount > endDayCount) {
+              // 末尾の日数を超えた
+              temp.day = dayCount - endDayCount;
+              temp.class.push("is-disabled");
+              dayCount++;
+            } else {
+              temp.day = dayCount;
+              temp.isSelective = true;
+              temp.class.push("calendar_td");
+              dayCount++;
+            }
+          }
+        }
+      },
+      moveCalendar: function (e) {
+        if (e === 'prev') {
+          this.month--;
+          if (this.month < 1) {
+            this.year--;
+            this.month = 12
+          }
+        }
+        if (e === 'next') {
+          this.month++;
+          if (this.month > 12) {
+            this.year++;
+            this.month = 1
+          }
+        }
+        this.createCalendar(this.year, this.month);
+      },
+
+      makeCsvString: function () {
+        function p00(num) {
+          return ('00' + num).slice(-2);
+        }
+        var dd = new Date();
+        this.fileName = dd.getFullYear()+""+p00(dd.getMonth() + 1)+p00(dd.getDate())+"_"+p00(dd.getHours())+p00(dd.getMinutes())+p00(dd.getSeconds())+"_001.csv";
+
+        const csvFormat = (col => `"${col}"`);
+
+
+        var memberList = this.memberListText.replace(/\n+/g, '\n').split('\n');
+        memberList.some(function (v, i) {
+          //console.log(v);
+          if (v == "") memberList.splice(i, 1);
+        });
+
+        //console.log(memberList);
+        var records = [
+          ["残留日", "残留者ユーザID", "場所コード", "建物コード", "理由", "その他", "申請日", "申請者ユーザID", "Ｒ更新者", "Ｒ更新日付", "Ｒ更新時刻"].map(csvFormat).join(',')
+        ];
+        for (let w = 0; w < this.days.length; w++) { // 行
+          for (let d = 0; d < this.days[w].length; d++) { // 列
+            if (this.days[w][d].isCheck) {
+              var temp = this.days[w][d];
+              for (let m = 0; m < memberList.length; m++) {
+                records.push(
+                  [`${this.year}/${p00(this.month)}/${p00(temp.day)}`, memberList[m], "805092000", "805", "1", "", `${this.year}/${p00(this.month)}/${p00(temp.day)}`, "1894", "1894", `${this.year}${p00(this.month)}${p00(temp.day)}`, "160000000"].map(csvFormat).join(',')
+                );
+              }
+            }
+            // {
+            //   row: w,
+            //   col: d,
+            //   day: 0,
+            //   class: [],
+            //   style: {},
+            //   isCheck: false,
+            //   isSelective: false
+            // }
+          }
+        }
+
+        const csvData = records.join('\n');
+        //console.log(csvData);
+        return csvData;
+      },
+      csvDownload: function () {
+        const CAN_USE_SAVE_BLOB = window.navigator.msSaveBlob !== undefined;
+        var csvString = this.makeCsvString();
+        const unicodeList = [];
+        for (let i = 0; i < csvString.length; i += 1) {
+          unicodeList.push(csvString.charCodeAt(i));
+        }
+
+        // 変換処理の実施
+        const shiftJisCodeList = Encoding.convert(unicodeList, 'sjis', 'unicode');
+        const uInt8List = new Uint8Array(shiftJisCodeList);
+
+        const BLOB = new Blob([uInt8List], { 'type': 'text/csv' });
+        if (CAN_USE_SAVE_BLOB) {
+          window.navigator.msSaveBlob(BLOB, this.fileName);
+        } else {
+          const TEMP_ANCHOR = document.createElement('a');
+          TEMP_ANCHOR.href = URL.createObjectURL(BLOB);
+          TEMP_ANCHOR.setAttribute('download', this.fileName);
+          TEMP_ANCHOR.dispatchEvent(new MouseEvent('click'));
+        }
+      }
+    }
+  });
+
+
+</script>
+<style>
+  #calendar {}
+
+  section {
+    margin: 10px;
+  }
+
+  h1 {
+    font-size: 18px;
+  }
+
+  table {
+    border-spacing: 0;
+    border-collapse: collapse;
+    width: 100%;
+    table-layout: fixed;
+    -ms-user-select: none;
+    /* IE 10+ */
+    -moz-user-select: -moz-none;
+    -khtml-user-select: none;
+    -webkit-user-select: none;
+    user-select: none;
+  }
+
+  td {
+    border: 1px solid #ddd;
+    padding: 5px;
+    text-align: center;
+    cursor: pointer;
+    height: 40px;
+  }
+
+  td:first-child {
+    color: red;
+  }
+
+  td:last-child {
+    color: royalblue;
+  }
+
+  td.is-disabled {
+    color: #ccc;
+    cursor: default;
+  }
+
+  .tdChecking {
+    border-radius: 3px;
+    border: 1px solid #2196F3;
+    background-color: #E3F2FD;
+  }
+</style>
